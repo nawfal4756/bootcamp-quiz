@@ -1,0 +1,16 @@
+body {
+	margin: 3% !important;
+	display: flex;
+	flex-direction: row;
+}
+
+.heading {
+	text-align: center;
+	margin: 4% !important;
+}
+
+.buttons {
+	margin: 4%;
+	padding: 4%;
+	width: 100% !important;
+}

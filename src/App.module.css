@@ -1,0 +1,16 @@
+body {
+	background-color: aqua !important;
+}
+
+.container2 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	vertical-align: middle;
+}
+
+.buttons {
+	margin: 3% !important;
+	width: 75% !important;
+}
