@@ -5,6 +5,11 @@ body {
 	overflow-x: hidden;
 }
 
-.heading {
+.images {
+	width: 200px !important;
+	height: auto !important;
+}
+
+.text {
 	text-align: center;
 }

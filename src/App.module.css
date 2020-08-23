@@ -10,6 +10,10 @@ body {
 	vertical-align: middle;
 }
 
+.heading {
+	text-align: center;
+}
+
 .buttons {
 	margin: 3% !important;
 	width: 75% !important;
