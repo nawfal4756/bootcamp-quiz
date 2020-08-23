@@ -13,32 +13,37 @@ var categoryValue = 'any';
 var difficultyLevel = 'easy';
 var type = 'multiple';
 
+type AnswerObject = {
+	answer: string;
+	correct: boolean;
+	correctAnswer: string;
+};
+
 export const typeHandler = async (props: string) => {
 	type = props;
-	console.log(type);
 };
 
 export const questionsHandler = async (props: string) => {
 	noOfQuestions = props;
-	console.log(noOfQuestions);
 };
 
 export const categoryHandler = async (props: string) => {
 	categoryValue = props;
-	console.log(categoryValue);
 };
 
 export const difficultyHandler = async (props: string) => {
 	difficultyLevel = props;
-	console.log(difficultyLevel);
 };
 
 function App() {
 	const [ loading, setLoading ] = useState(false);
 	const [ quizStart, setQuizStart ] = useState(false);
-	const [ quizOver, setQuizOver ] = useState(false);
+	const [ quizOver, setQuizOver ] = useState(true);
 	const [ questions, setQuestions ] = useState<QuestionState[]>([]);
 	const [ number, setNumber ] = useState(0);
+	const [ userAnswer, setUserAnswer ] = useState<AnswerObject[]>([]);
+	const [ score, setScore ] = useState(0);
+	const [ press, setPress ] = useState(1);
 
 	const startQuiz = async () => {
 		setLoading(true);
@@ -51,7 +56,41 @@ function App() {
 	};
 
 	const nextQuestion = async () => {
-		setNumber(number + 1);
+		const nextQuestion = number + 1;
+		setPress(press + 1);
+		if (nextQuestion === Number(noOfQuestions)) {
+			setQuizOver(true);
+		} else {
+			setNumber(nextQuestion);
+		}
+	};
+
+	const quizStartAgain = async () => {
+		setLoading(false);
+		setQuizStart(false);
+		setQuizOver(true);
+		setQuestions([]);
+		setNumber(0);
+		setUserAnswer([]);
+		setScore(0);
+	};
+
+	const answerCheck = async (e: React.MouseEvent<HTMLButtonElement>) => {
+		if (!quizOver) {
+			const answer: string = e.currentTarget.value;
+
+			const correct: boolean = questions[number].correct_answer === answer;
+
+			if (correct) setScore((prev) => prev + 1);
+
+			const answerObject = {
+				answer,
+				correct,
+				correctAnswer: questions[number].correct_answer
+			};
+
+			setUserAnswer((prev) => [ ...prev, answerObject ]);
+		}
 	};
 
 	return (
@@ -73,6 +112,9 @@ function App() {
 							totalQuestions={noOfQuestions}
 							question={questions[number].question}
 							answers={questions[number].answers}
+							callback={answerCheck}
+							score={score}
+							userAnswers={userAnswer[number]}
 						/>
 					) : null}
 					{loading ? <Typography>Loading...</Typography> : null}
@@ -81,8 +123,15 @@ function App() {
 							Start Quiz
 						</Button>
 					)}
-					{quizOver ? <Button variant="outlined">Start Quiz Again</Button> : null}
-					{!loading && quizStart ? (
+					{userAnswer.length === Number(noOfQuestions) || press === Number(noOfQuestions) ? (
+						<Button onClick={quizStartAgain} variant="outlined">
+							Start Quiz Again
+						</Button>
+					) : null}
+					{!loading &&
+					quizStart &&
+					userAnswer.length !== Number(noOfQuestions) &&
+					press !== Number(noOfQuestions) ? (
 						<Button variant="outlined" onClick={nextQuestion}>
 							Next Question
 						</Button>
