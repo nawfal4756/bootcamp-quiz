@@ -49,7 +49,7 @@ export const CategorySelector = () => {
 					</Typography>
 				</Grid>
 				{categoryList.map(({ id, name, img }) => (
-					<Grid item xs={4} md={3} key={id}>
+					<Grid item xs={6} md={3} key={id}>
 						<Button onClick={(e) => setCategoryValue(id)}>
 							<Card>
 								<CardContent>
