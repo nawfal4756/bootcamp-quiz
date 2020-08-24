@@ -46,6 +46,11 @@ export const QuestionCard: React.FC<Props> = ({
 									Your answer is {userAnswers.correct ? 'Correct' : 'Wrong'}
 								</Typography>
 							) : null}
+							{userAnswers ? userAnswers.correct ? null : (
+								<Typography className={styles.false}>
+									The correct answer was {userAnswers.correctAnswer}
+								</Typography>
+							) : null}
 						</CardContent>
 					</Card>
 				</Grid>
